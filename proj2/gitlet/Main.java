@@ -66,7 +66,7 @@ public class Main {
                     printError("Incorrect operands.");
                 }
             }
-            default -> printError("No command with that name exists.");
+            default -> System.out.print("");
         }
     }
 
@@ -81,10 +81,9 @@ public class Main {
         checkArglength(args);
         String firstArg = args[0];
         Repository repo = REPO_DIR.exists() ? readRepo() : null;
-        if (repo == null) {
+        if (repo == null && !firstArg.equals("init")) {
             printError("Not in an initialized Gitlet directory.");
         }
-        assert repo != null;
         switch (firstArg) {
             case "init" -> {
                 repo = Repository.init();
