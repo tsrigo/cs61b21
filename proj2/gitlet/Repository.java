@@ -91,7 +91,7 @@ public class Repository implements Serializable {
 
     public static Repository init() {
         if (GITLET_DIR.exists()) {
-            System.out.println("A Gitlet version-control system " 
+            System.out.println("A Gitlet version-control system "
                     + "already exists in the current directory.");
             System.exit(0);
         }
@@ -285,7 +285,7 @@ public class Repository implements Serializable {
         for (String f : cwdFiles) {
             boolean isTracking = (trackingArea.get(f) != null);
             if (!isTracking) {
-                System.out.println(f + "(untracked)");
+                System.out.println(f);
             }
         }
     }
@@ -557,7 +557,7 @@ public class Repository implements Serializable {
         String checkoutFile = sha2commit.get(commitId).getFilesha(filename);
         boolean isTracking = (trackingArea.get(filename) != null);
         if (cwdFile.exists() && !isTracking && !cwdFilesha.equals(checkoutFile)) {
-            System.out.println("There is an untracked file in the way; " 
+            System.out.println("There is an untracked file in the way; "
                     + "delete it, or add and commit it first.");
             System.exit(0);
         }
