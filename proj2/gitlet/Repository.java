@@ -91,7 +91,8 @@ public class Repository implements Serializable {
 
     public static Repository init() {
         if (GITLET_DIR.exists()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.out.println("A Gitlet version-control system " +
+                    "already exists in the current directory.");
             System.exit(0);
         }
         GITLET_DIR.mkdir();
@@ -147,7 +148,8 @@ public class Repository implements Serializable {
             String S = sha1((Object) readContents(X));
             newCommit.addFile(X.getName(), S);
         }
-        newCommit.setFirstParent(commit2sha(getCurrentCommit()));    // Add a commit to the commit tree.
+        // Add a commit to the commit tree.
+        newCommit.setFirstParent(commit2sha(getCurrentCommit()));
         if (givenBranch != null) {
             newCommit.setSecondParent(commit2sha(branches.get(givenBranch)));
         }
@@ -265,7 +267,8 @@ public class Repository implements Serializable {
 
             if (inCwd) {
                 // if there is a modified file that is not staged, it will be marked modified.
-                // if there is a file that is staged but not same with the tracked version, it will be marked modified.
+                // if there is a file that is staged but not same with the tracked version,
+                // it will be marked modified.
                 String cwdSha = sha1((Object) readContents(cwdFile));
                 if (isTracking && !isStaging && !cwdSha.equals(trackingSha)
                         || isStaging && !cwdSha.equals(stagingSha)) {
@@ -501,7 +504,8 @@ public class Repository implements Serializable {
         while (!tep.isEmpty()) {
             String t = tep.poll();
             xAncestor.add(t);
-            String p1 = sha2commit.get(t).getFirstParent(), p2 = sha2commit.get(t).getSecondParent();
+            String p1 = sha2commit.get(t).getFirstParent();
+            String p2 = sha2commit.get(t).getSecondParent();
             if (p1 != null) {
                 tep.add(p1);
             }
@@ -520,7 +524,8 @@ public class Repository implements Serializable {
                 return sha2commit.get(t);
             }
             xAncestor.add(t);
-            String p1 = sha2commit.get(t).getFirstParent(), p2 = sha2commit.get(t).getSecondParent();
+            String p1 = sha2commit.get(t).getFirstParent();
+            String p2 = sha2commit.get(t).getSecondParent();
             if (p1 != null) {
                 tep.add(p1);
             }
@@ -552,7 +557,8 @@ public class Repository implements Serializable {
         String checkoutFile = sha2commit.get(commitId).getFilesha(filename);
         boolean isTracking = (trackingArea.get(filename) != null);
         if (cwdFile.exists() && !isTracking && !cwdFilesha.equals(checkoutFile)) {
-            System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+            System.out.println("There is an untracked file in the way; " +
+                    "delete it, or add and commit it first.");
             System.exit(0);
         }
         return true;
@@ -588,7 +594,6 @@ public class Repository implements Serializable {
 
     private String findId(String id) {
         for (String f : sha2commit.keySet()) {
-            //System.out.println("DEBUG : id is : " + id + "  f is : " + f.substring(0, id.length()));
             if (id.equals(f.substring(0, id.length()))) {
                 return f;
             }
@@ -607,9 +612,8 @@ public class Repository implements Serializable {
         }
         return t;
     }
-    /**
-     * Unstage the file if it is currently staged for addition.
-     * Or remove the file in tracking area.
-     * @param filename The file to be removed.
-     */
+    private static void printError(String info) {
+        System.out.println(info);
+        System.exit(0);
+    }
 }

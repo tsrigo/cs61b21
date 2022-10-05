@@ -36,8 +36,11 @@ public class Main {
         }
         int givenNum = args.length;
         String command = args[0];
-        int std = ARG_LENGTH.get(command);
 
+        if (ARG_LENGTH.get(command) == null) {
+            printError("No command with that name exists.");
+        }
+        int std = ARG_LENGTH.get(command);
         if (std < givenNum) {
             System.out.println("Incorrect operands.");
             System.exit(0);
